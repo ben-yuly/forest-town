@@ -76,7 +76,6 @@ class WorldMap():
             s += '\n'
         return s
 
-
     def Turn(self):
         newgrid = deepcopy(self.grid)
         for r in range(0, self.length):

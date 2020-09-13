@@ -1,6 +1,8 @@
 from random import *
+from copy import copy, deepcopy
+
+length = 10
 height = 10
-width = 10
 
 class Plain():
     def __init__(self):
@@ -8,7 +10,6 @@ class Plain():
     def __str__(self):
         return '#'
     def Evolve(self, nearby_tiles):
-        print(len(nearby_tiles))
         if any(isinstance(tile, Tree) for tile in nearby_tiles):
             ran = random()
             if ran > 0.9:
@@ -28,7 +29,7 @@ class Seedling():
             evolved = Sapling()
             return evolved
         else:
-            return self
+            return self.clone()
 
 class Sapling():
     def __init__(self):
@@ -42,7 +43,7 @@ class Sapling():
             evolved = Tree()
             return evolved
         else:
-            return self
+            return self.clone()
 
 class Tree():
     def __init__(self):
@@ -55,9 +56,9 @@ class Tree():
 class Map():
     def __init__(self):                         # defines initialization function that takes para 'N'
         self.grid = []                          # sets self.grid to an empty list
-        for r in range(0,10):                   # for loop, for every row in range 0 to para N
+        for r in range(0, length):                   # for loop, for every row in range 0 to para N
             row = []                            # create an empty list
-            for c in range(0,10):               # nested loop, for every column in range 0 to para N
+            for c in range(0, height):               # nested loop, for every column in range 0 to para N
                 row.append(Plain())             # adds whatever to the list 'row'
             self.grid.append(row)               # appends the entire row to the self.grid list
         # for testing purposes
@@ -75,16 +76,14 @@ class Map():
         return s                                # returns the Map
 
     def Turn(self):
-        newgrid = self.grid
-        for r in range(0, (len(self.grid))):
-            for c in range(0, len(self.grid[r])):
+        newgrid = deepcopy(self.grid)
+        for r in range(0, length):
+            for c in range(0, height):
                 tile = self.grid[c][r]
                 nearby_tiles = []
                 for x in range(r-1, r+2):
                     for y in range(c-1, c+2):
-                        if (x < 0 or x > 9) or (y < 0 or y > 9): #check if index is out of bounds of grid
-                            pass
-                        else:
+                        if (x >= 0 or x < length) or (y >= 0 or y < width): #check if index is in bounds of grid
                             nearby_tiles.append(self.grid[x][y])
                 newtile = tile.Evolve(nearby_tiles)
                 newgrid[c][r] = newtile

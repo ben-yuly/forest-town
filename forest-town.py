@@ -1,9 +1,6 @@
 from random import *
 from copy import copy, deepcopy
 
-length = 10
-height = 10
-
 class Plain():
     def __init__(self):
         self.age = 0
@@ -15,7 +12,6 @@ class Plain():
             if ran > 0.9:
                 return Tree()
         return Plain()
-
 
 class Seedling():
     def __init__(self):
@@ -53,47 +49,51 @@ class Tree():
     def Evolve(self, nearby_tiles):
         return Tree()
 
-class Map():
-    def __init__(self):                         # defines initialization function that takes para 'N'
-        self.grid = []                          # sets self.grid to an empty list
-        for r in range(0, length):                   # for loop, for every row in range 0 to para N
-            row = []                            # create an empty list
-            for c in range(0, height):               # nested loop, for every column in range 0 to para N
-                row.append(Plain())             # adds whatever to the list 'row'
-            self.grid.append(row)               # appends the entire row to the self.grid list
-        # for testing purposes
-        self.grid[4][4] = Tree()
-        self.grid[4][5] = Tree()
-        self.grid[5][4] = Tree()
-        self.grid[5][5] = Tree()
+class WorldMap():
+    def __init__(self, grid = None, length = 10, height = 10):
+        self.grid = grid
+        self.length = length
+        self.height = height
 
-    def __str__(self):                          # this returns the defined string representation of an object (map here)
-        s = ''                                  # sets s equal to a blank space
-        for row in self.grid:                   # for every row (nested list) in self.grid (map)
-            for tile in row:                    # for each tile (column) in that row
-                s += str(tile)                  # s adds the object, called as a string
-            s += '\n'                           # adds a new line break after each row
-        return s                                # returns the Map
+        if grid == None:
+            self.grid = []
+            for r in range(0, self.length):
+                row = []
+                for c in range(0, self.height):
+                    row.append(Plain())
+                self.grid.append(row)
+                # for testing purposes
+            self.grid[4][4] = Tree()
+            self.grid[4][5] = Tree()
+            self.grid[5][4] = Tree()
+            self.grid[5][5] = Tree()
+
+    def __str__(self):
+        s = ''
+        for row in self.grid:
+            for tile in row:
+                s += str(tile)
+            s += '\n'
+        return s
+
 
     def Turn(self):
         newgrid = deepcopy(self.grid)
-        for r in range(0, length):
-            for c in range(0, height):
+        for r in range(0, self.length):
+            for c in range(0, self.height):
                 tile = self.grid[c][r]
                 nearby_tiles = []
                 for x in range(r-1, r+2):
                     for y in range(c-1, c+2):
-                        if (x >= 0 or x < length) or (y >= 0 or y < width): #check if index is in bounds of grid
+                        if ((x >= 0 and x < self.length) and (y >= 0 and y < self.height)):
                             nearby_tiles.append(self.grid[x][y])
                 newtile = tile.Evolve(nearby_tiles)
                 newgrid[c][r] = newtile
-        self.grid = newgrid
-        return
+        return WorldMap(newgrid)
 
-m = Map()
-for t in range(0,1):
-    print(t)
-    m.Turn()
-    print(m)
-
-#updating random tile in nearby_tiles
+worldMap = WorldMap()
+print(worldMap)
+while True:
+    input()
+    worldMap = worldMap.Turn()
+    print(worldMap)

@@ -39,3 +39,6 @@ T -> /,#
 
 t -> T - (Turns since planting * .20) + R(0-1) > 1
 T -> /
+
+# Conventions
+* _Row-first for multidimensional lists!_ - for Jon

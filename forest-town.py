@@ -81,14 +81,15 @@ class WorldMap():
         newgrid = deepcopy(self.grid)
         for r in range(0, self.length):
             for c in range(0, self.height):
-                tile = self.grid[c][r]
+                tile = self.grid[r][c]
                 nearby_tiles = []
                 for x in range(r-1, r+2):
                     for y in range(c-1, c+2):
                         if ((x >= 0 and x < self.length) and (y >= 0 and y < self.height)):
                             nearby_tiles.append(self.grid[x][y])
                 newtile = tile.Evolve(nearby_tiles)
-                newgrid[c][r] = newtile
+                newgrid[r][c] = newtile
+
         return WorldMap(newgrid)
 
 worldMap = WorldMap()

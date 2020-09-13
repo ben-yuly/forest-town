@@ -93,6 +93,9 @@ class WorldMap():
 
 worldMap = WorldMap()
 print(worldMap)
+
+print("test")
+
 while True:
     input()
     worldMap = worldMap.Turn()
